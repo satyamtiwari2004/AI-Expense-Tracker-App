@@ -15,8 +15,16 @@ export const createOrUpdateTransaction = async (
       return { success: false, msg: "Invaild Transaction Data" };
     }
     if (id) {
-      
-     }
+      const oldTransactionSnapshort = await getDoc(doc(firestore, "transactions", id));
+      const oldTransaction = oldTransactionSnapshort.data() as TransactionType;
+      const shouldRevertOriginal = oldTransaction.type != type ||
+        oldTransaction.amount != amount || oldTransaction.walletId != walletId
+
+      if (shouldRevertOriginal) {
+
+      }
+
+    }
     else {
       //update wallet for new transaction
       let res = await updateWalletForNewTransaction(

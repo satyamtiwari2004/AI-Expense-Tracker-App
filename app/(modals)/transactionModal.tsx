@@ -78,6 +78,8 @@ const TransactionModal = () => {
       uid: user?.uid
     }
 
+    if (oldTransaction.id) transactionData.id = oldTransaction.id
+
     setLoading(true)
     const res = await createOrUpdateTransaction(transactionData);
     setLoading(false)
@@ -122,17 +124,17 @@ const TransactionModal = () => {
 
 
 
-  const [formattedAmount, setFormattedAmount] = useState(
-    transaction.amount ? transaction.amount.toLocaleString('en-IN') : ''
-  );
+  // const [formattedAmount, setFormattedAmount] = useState(
+  //   transaction.amount ? transaction.amount.toLocaleString('en-IN') : ''
+  // );
 
-  const handleAmountChange = (text: string) => {
-    const numeric = text.replace(/,/g, '').replace(/\D/g, '');
-    const numberValue = Number(numeric);
+  // const handleAmountChange = (text: string) => {
+  //   const numeric = text.replace(/,/g, '').replace(/\D/g, '');
+  //   const numberValue = Number(numeric);
 
-    setFormattedAmount(numberValue ? numberValue.toLocaleString('en-IN') : '');
-    setTransaction({ ...transaction, amount: numberValue });
-  };
+  //   setFormattedAmount(numberValue ? numberValue.toLocaleString('en-IN') : '');
+  //   setTransaction({ ...transaction, amount: numberValue });
+  // };
 
 
 
@@ -289,9 +291,9 @@ const TransactionModal = () => {
           <View style={{ gap: spacingY._10 }}>
             <Typo size={17}>Amount</Typo>
             <Input
-              value={formattedAmount}
+              value={transaction.amount.toString()}
               keyboardType="numeric"
-              onChangeText={handleAmountChange}
+              onChangeText={(value) => setTransaction({ ...transaction, amount: Number(value.replace(/[^0-9]/g, "")) })}
             />
           </View>
 
